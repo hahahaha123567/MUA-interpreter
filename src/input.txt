@@ -27,6 +27,6 @@ make "c [make ""d ""niconiconi print :d]
 thing "c
 // read
 make "e read
-make "f readlinst
 print :e
+make "f readlinst
 print :f

@@ -1,31 +1,12 @@
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Scanner;
 
 public class Parser {
 
     private static ArrayList<String> content = null;
     private static int contentIndex = 0;
-
-    public Parser (String txt) {
-        // delete duplicated space
-        txt = txt.replaceAll("\\s+", " ");
-        // add space around [], by cutting into string array
-        String contentString = new String("");
-        String[] tempArray = txt.split(" ");
-        for (String s : tempArray) {
-            if (!s.startsWith("\"")) {
-                s = s.replace("[", "[ ");
-                s = s.replace("]", " ]");
-                s = s.replace(":", ": ");
-            }
-            contentString += s;
-            contentString += " ";
-        }
-        contentString = contentString.replaceAll("\\s+", " ");
-        tempArray = contentString.split(" ");
-        content = new ArrayList<String>(Arrays.asList(tempArray));
-    }
 
     public static void addContent (ArrayList<Data> list) {
         for (int i = list.size(); i >= 1; --i) {
@@ -34,14 +15,20 @@ public class Parser {
     }
 
     private static String nextWord () {
-        String tempString = content.get((contentIndex));
+        String tempString = content.get(contentIndex);
         contentIndex++;
         return tempString;
     }
 
-    public void run () {
+    public static void run () {
+        contentIndex = 0;
         while (contentIndex < content.size()) {
-            go(false);
+            try {
+                go(false);
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println("Error: More Argument Needed");
+                break;
+            }
         }
     }
     public static Data go (boolean inList) {
@@ -81,13 +68,39 @@ public class Parser {
             return data;
         } else {
             //exception
-            System.out.println("Error: Input Format Error");
+            System.out.println("Error: Input Format Error, Neither Operation Nor Word");
             return null;
         }
     }
-    private String exec(Operation op) {
-        String data1 = null, data2 = null;
 
-        return "";
+    public static void main (String[] argv) {
+        Scanner in = new Scanner(System.in);
+        String line = null;
+        while (in.hasNext()) {
+            line = in.nextLine();
+            // drop comment
+            if (!line.startsWith("//")) {
+                // drop duplicated space
+                line = line.replaceAll("\\s+", " ");
+                // since "[a is an legal word, add space around :[] by cutting into an array
+                // some students say FM changed the word format, but I'm not informed
+                String[] tempArray = line.split(" ");
+                line = "";
+                for (String s : tempArray) {
+                    if (!s.startsWith("\"")) {
+                        s = s.replace("[", "[ ");
+                        s = s.replace("]", " ]");
+                        s = s.replace(":", ": ");
+                    }
+                    line += s;
+                    line += " ";
+                }
+                // drop duplicated space again
+                line = line.replaceAll("\\s+", " ");
+                tempArray = line.split(" ");
+                content = new ArrayList<String>(Arrays.asList(tempArray));
+            }
+            run();
+        }
     }
 }
