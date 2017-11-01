@@ -32,7 +32,7 @@ public class Parser {
         }
     }
     public static Data go (boolean inList) {
-        String word = null;
+        String word;
         try {
             word = nextWord();
         } catch (ArrayIndexOutOfBoundsException e) {
@@ -56,7 +56,7 @@ public class Parser {
         } else if (Data.isData(word, inList)) {
             // reflection, for runtime type declare
             Data data = null;
-            Class c = null;
+            Class c;
             try {
                 c = Class.forName(Data.getType(word, inList));
                 Constructor cc = c.getDeclaredConstructor(new Class[]{String.class});
@@ -75,7 +75,7 @@ public class Parser {
 
     public static void main (String[] argv) {
         Scanner in = new Scanner(System.in);
-        String line = null;
+        String line;
         while (in.hasNext()) {
             line = in.nextLine();
             // drop comment
@@ -85,17 +85,18 @@ public class Parser {
                 // since "[a is an legal word, add space around :[] by cutting into an array
                 // some students say FM changed the word format, but I'm not informed
                 String[] tempArray = line.split(" ");
-                line = "";
+                StringBuffer sb = new StringBuffer("");
                 for (String s : tempArray) {
                     if (!s.startsWith("\"")) {
                         s = s.replace("[", "[ ");
                         s = s.replace("]", " ]");
                         s = s.replace(":", ": ");
                     }
-                    line += s;
-                    line += " ";
+                    sb.append(s);
+                    sb.append(" ");
                 }
                 // drop duplicated space again
+                line = sb.toString();
                 line = line.replaceAll("\\s+", " ");
                 tempArray = line.split(" ");
                 content = new ArrayList<String>(Arrays.asList(tempArray));

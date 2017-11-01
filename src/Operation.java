@@ -7,8 +7,8 @@ import java.util.Scanner;
 public enum Operation {
     MAKE("make") {
         public Data exec() throws OperationTypeMismatch {
-            Word data1 = null;
-            Data data2 = null;
+            Word data1;
+            Data data2;
             try {
                 data1 = (Word) Parser.go(false);
                 data2 = Parser.go(false);
@@ -29,7 +29,7 @@ public enum Operation {
     },
     THING1("thing") {
         public Data exec() throws OperationTypeMismatch, ValueNotFound {
-            Word data1 = null;
+            Word data1;
             try {
                 data1 = (Word) Parser.go(false);
             } catch (NullPointerException e) {
@@ -53,7 +53,7 @@ public enum Operation {
     },
     THING2(":") {
         public Data exec() throws OperationTypeMismatch, ValueNotFound {
-            Word data1 = null;
+            Word data1;
             try {
                 data1 = (Word) Parser.go(true);
             } catch (NullPointerException e) {
@@ -77,7 +77,7 @@ public enum Operation {
     },
     ERASE("erase") {
         public Data exec() throws OperationTypeMismatch, ValueNotFound {
-            Word data1 = null;
+            Word data1;
             try {
                 data1 = (Word) Parser.go(false);
             } catch (NullPointerException e) {
@@ -99,7 +99,7 @@ public enum Operation {
     },
     ISNAME("isname") {
         public Data exec() throws OperationTypeMismatch {
-            Word data1 = null;
+            Word data1;
             try {
                 data1 = (Word) Parser.go(false);
             } catch (NullPointerException e) {
@@ -137,8 +137,8 @@ public enum Operation {
         public Data exec() throws OperationTypeMismatch {
             Scanner in = new Scanner(System.in);
             String str = in.next();
-            Data data = null;
-            Class c = null;
+            Data data;
+            Class c;
             try {
                 c = Class.forName(Data.getType(str, true));
                 Constructor cc = c.getDeclaredConstructor(new Class[]{String.class});
@@ -152,15 +152,20 @@ public enum Operation {
     },
     READLINST("readlinst") {
         public Data exec() throws OperationTypeMismatch {
-            List list = new List("]");
+            List list;
+            try {
+                list = new List("]");
+            } catch (Exception e) {
+                throw new OperationTypeMismatch("List Ctor");
+            }
             Scanner in = new Scanner(System.in);
             String str = in.nextLine();
             str = str.replaceAll("\\s+", " ");
             String[] strArray = str.split(" ");
-            Data data = null;
-            Class c = null;
-            for (int i = 0; i < strArray.length; ++i) {
-                str = strArray[i];
+            Data data;
+            Class c;
+            for (String s : strArray) {
+                str = s;
                 try {
                     c = Class.forName(Data.getType(str, true));
                     Constructor cc = c.getDeclaredConstructor(new Class[]{String.class});
@@ -176,8 +181,8 @@ public enum Operation {
     },
     ADD("add") {
         public Data exec() throws OperationTypeMismatch {
-            Number data1 = null;
-            Number data2 = null;
+            Number data1;
+            Number data2;
             try {
                 data1 = (Number)Parser.go(false);
                 data2 = (Number)Parser.go(false);
@@ -196,8 +201,8 @@ public enum Operation {
     },
     SUB("sub") {
         public Data exec() throws OperationTypeMismatch {
-            Number data1 = null;
-            Number data2 = null;
+            Number data1;
+            Number data2;
             try {
                 data1 = (Number)Parser.go(false);
                 data2 = (Number)Parser.go(false);
@@ -216,8 +221,8 @@ public enum Operation {
     },
     MUL("mul") {
         public Data exec() throws OperationTypeMismatch {
-            Number data1 = null;
-            Number data2 = null;
+            Number data1;
+            Number data2;
             try {
                 data1 = (Number)Parser.go(false);
                 data2 = (Number)Parser.go(false);
@@ -236,8 +241,8 @@ public enum Operation {
     },
     DIV("div") {
         public Data exec() throws OperationTypeMismatch {
-            Number data1 = null;
-            Number data2 = null;
+            Number data1;
+            Number data2;
             try {
                 data1 = (Number)Parser.go(false);
                 data2 = (Number)Parser.go(false);
@@ -260,8 +265,8 @@ public enum Operation {
     },
     MOD("mod") {
         public Data exec() throws OperationTypeMismatch {
-            Number data1 = null;
-            Number data2 = null;
+            Number data1;
+            Number data2;
             try {
                 data1 = (Number)Parser.go(false);
                 data2 = (Number)Parser.go(false);
@@ -280,8 +285,8 @@ public enum Operation {
     },
     EQ("eq") {
         public Data exec() throws OperationTypeMismatch {
-            Data data1 = null;
-            Data data2 = null;
+            Data data1;
+            Data data2;
             try {
                 data1 = Parser.go(false);
                 data2 = Parser.go(false);
@@ -292,7 +297,7 @@ public enum Operation {
                 if (data1.getClass() == Number.class && data2.getClass() == Number.class) {
                     Number num1 = (Number)data1;
                     Number num2 = (Number)data2;
-                    if (num1.getValue() == num2.getValue()) {
+                    if (num1.getValue().equals(num2.getValue())) {
                         return new Boolean("true");
                     } else {
                         return new Boolean("false");
@@ -315,8 +320,8 @@ public enum Operation {
     },
     GT("gt") {
         public Data exec() throws OperationTypeMismatch {
-            Data data1 = null;
-            Data data2 = null;
+            Data data1;
+            Data data2;
             try {
                 data1 = Parser.go(false);
                 data2 = Parser.go(false);
@@ -350,8 +355,8 @@ public enum Operation {
     },
     LT("lt") {
         public Data exec() throws OperationTypeMismatch {
-            Data data1 = null;
-            Data data2 = null;
+            Data data1;
+            Data data2;
             try {
                 data1 = Parser.go(false);
                 data2 = Parser.go(false);
@@ -385,8 +390,8 @@ public enum Operation {
     },
     AND("and") {
         public Data exec() throws OperationTypeMismatch {
-            Boolean data1 = null;
-            Boolean data2 = null;
+            Boolean data1;
+            Boolean data2;
             try {
                 data1 = (Boolean) Parser.go(false);
                 data2 = (Boolean) Parser.go(false);
@@ -411,8 +416,8 @@ public enum Operation {
     },
     OR("or") {
         public Data exec() throws OperationTypeMismatch {
-            Boolean data1 = null;
-            Boolean data2 = null;
+            Boolean data1;
+            Boolean data2;
             try {
                 data1 = (Boolean) Parser.go(false);
                 data2 = (Boolean) Parser.go(false);
@@ -437,7 +442,7 @@ public enum Operation {
     },
     NOT("not") {
         public Data exec() throws OperationTypeMismatch {
-            Boolean data1 = null;
+            Boolean data1;
             try {
                 data1 = (Boolean) Parser.go(false);
             } catch (NullPointerException e) {
@@ -465,7 +470,7 @@ public enum Operation {
     Operation(String type) { this.type = type; }
     public String getType() { return type; }
 
-    private static HashMap<Word, Data> map = new HashMap<Word, Data>();
+    private static HashMap<Word, Data> map = new HashMap<>();
     
     public static Operation getOperation (String word) {
         for (Operation o : Operation.values()) {

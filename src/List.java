@@ -3,12 +3,15 @@ import java.util.ArrayList;
 
 public class List implements Data {
 
-    private ArrayList<Data> value = new ArrayList<Data>();
+    private ArrayList<Data> value = new ArrayList<>();
 
-    public List (String word) {
+    public List (String word) throws Exception {
         if (!word.equals("]")) {
             while (true) {
                 Data data = Parser.go(true);
+                if (data == null) {
+                    throw new Exception("List ctor error");
+                }
                 if (data.getClass() == this.getClass()) {
                     break;
                 } else {
