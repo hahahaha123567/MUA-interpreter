@@ -8,31 +8,15 @@ public class Parser {
     private static ArrayList<String> content = null;
     private static int contentIndex = 0;
 
-    public static void addContent (ArrayList<Data> list) {
-        for (int i = list.size(); i >= 1; --i) {
-            content.add(contentIndex, list.get(i-1).toString());
-        }
-    }
-
     private static String nextWord () {
         String tempString = content.get(contentIndex);
         contentIndex++;
         return tempString;
     }
 
-    public static void run () {
-        contentIndex = 0;
-        while (contentIndex < content.size()) {
-            try {
-                go(false);
-            } catch (IndexOutOfBoundsException e) {
-                System.out.println("Error: More Argument Needed");
-                break;
-            }
-        }
-    }
-    public static Data go (boolean inList) {
+    static Data go (boolean inList) {
         String word;
+        Data data = null;
         try {
             word = nextWord();
         } catch (ArrayIndexOutOfBoundsException e) {
@@ -42,20 +26,18 @@ public class Parser {
         if (Operation.isOperation(word) && !inList) {
             Operation op = Operation.getOperation(word);
             try {
-                return op.exec();
-            } catch (OperationTypeMismatch e) {
-                System.out.println("Error: " + e.opType + ": Type Mismatch");
+                data = op != null ? op.exec() : null;
             } catch (NullPointerException e) {
                 System.out.println("Error: " + e.getMessage() + ": More Argument Needed");
+            } catch (OperationTypeMismatch e) {
+                System.out.println("Error: " + e.opType + ": Type Mismatch");
             } catch (ValueNotFound e) {
                 System.out.println("Error: " + e.opType + ": Value Not Found");
             } catch (ArithmeticException e) {
                 System.out.println("Error: " + "DIV" + ": Zero Cannot be the Divisor");
             }
-            return null;
         } else if (Data.isData(word, inList)) {
             // reflection, for runtime type declare
-            Data data = null;
             Class c;
             try {
                 c = Class.forName(Data.getType(word, inList));
@@ -65,11 +47,29 @@ public class Parser {
             } catch (Exception e) {
                 System.out.println("Error: Input Data Format Error");
             }
-            return data;
         } else {
             //exception
             System.out.println("Error: Input Format Error, Neither Operation Nor Word");
-            return null;
+            data = null;
+        }
+        return data;
+    }
+
+    static void addContent (ArrayList<Data> list) {
+        for (int i = list.size(); i >= 1; --i) {
+            content.add(contentIndex, list.get(i-1).toString());
+        }
+    }
+
+    private static void run () {
+        contentIndex = 0;
+        while (contentIndex < content.size()) {
+            try {
+                go(false);
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println("Error: More Argument Needed");
+                break;
+            }
         }
     }
 
@@ -99,7 +99,7 @@ public class Parser {
                 line = sb.toString();
                 line = line.replaceAll("\\s+", " ");
                 tempArray = line.split(" ");
-                content = new ArrayList<String>(Arrays.asList(tempArray));
+                content = new ArrayList<>(Arrays.asList(tempArray));
             }
             run();
         }

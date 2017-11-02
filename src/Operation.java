@@ -1,4 +1,3 @@
-
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -464,22 +463,14 @@ public enum Operation {
             }
         }
     };
-    abstract public Data exec () throws OperationTypeMismatch, ValueNotFound;
 
     private String type;
+    private static HashMap<Word, Data> map = new HashMap<>();
+
     Operation(String type) { this.type = type; }
     public String getType() { return type; }
 
-    private static HashMap<Word, Data> map = new HashMap<>();
-    
-    public static Operation getOperation (String word) {
-        for (Operation o : Operation.values()) {
-            if (word.equals(o.getType())) {
-                return o;
-            }
-        }
-        return null;
-    }
+    abstract public Data exec () throws OperationTypeMismatch, ValueNotFound;
 
     public static boolean isOperation (String word) {
         for (Operation o : Operation.values()) {
@@ -488,5 +479,14 @@ public enum Operation {
             }
         }
         return false;
+    }
+
+    public static Operation getOperation (String word) {
+        for (Operation o : Operation.values()) {
+            if (word.equals(o.getType())) {
+                return o;
+            }
+        }
+        return null;
     }
 }

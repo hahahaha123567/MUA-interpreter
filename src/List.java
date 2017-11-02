@@ -5,7 +5,7 @@ public class List implements Data {
 
     private ArrayList<Data> value = new ArrayList<>();
 
-    public List (String word) throws Exception {
+    List(String word) throws Exception {
         if (!word.equals("]")) {
             while (true) {
                 Data data = Parser.go(true);

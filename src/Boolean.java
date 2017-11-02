@@ -2,7 +2,7 @@ public class Boolean implements Data {
 
     private boolean value;
 
-    public Boolean (String word) {
+    Boolean (String word) {
         value = java.lang.Boolean.valueOf(word);
     }
 
