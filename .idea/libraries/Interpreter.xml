@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Interpreter">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/out/artifacts/interpreter_jar/interpreter.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

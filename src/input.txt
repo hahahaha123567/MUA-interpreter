@@ -1,32 +1,50 @@
-// assignment
-make "a 1
-make "b 2
-thing "a
-print isname "a
-print isname "c
-// calculate
-print add :a :b
-print sub :a :b
-print mul :a :b
-print div :a :b
-print mod :a :b
-// compare
-print eq :a :b
-print not gt :a :b
-print lt :a :b
-// logic
-erase "a
-erase "b
-make "a true
-make "b false
-print and :a :b
-print or :a :b
-print not :b
-// list
-make "c [make ""d ""niconiconi print :d]
-thing "c
-// read
-make "e read
-print :e
-make "f readlinst
-print :f
+// foo1
+make "length [
+    [a]
+    [
+        if isempty :a
+        [output 0]
+        [
+            make "b butfirst :a
+            output add 1 length b
+        ]
+    ]
+]
+make "haha "nico
+print length haha
+
+// foo2
+make "getType [
+    [arg]
+    [
+        if isnumber :arg
+        [print "this_is_number ]
+        [
+            if isword :arg
+             [print "this_is_word ]
+             [
+                 if islist :arg
+                 [print "this_is_list ]
+                 [
+                     if isbool :arg
+                     [print "this_is_bool ]
+                     []
+                 ]
+             ]
+        ]
+    ]
+]
+make "a 25252
+make "b "niconiconi
+make "c [ a b ]
+make "d false
+getType a
+getType b
+getType c
+getType d
+
+// foo3
+make "nico 25.252
+print sqrt :nico
+print int :nico
+repeat 5 [print random :nico]
