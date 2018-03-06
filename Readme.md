@@ -1,6 +1,6 @@
 # MUA 程序语言介绍
 
-[MUA language.md](MUA language.md)
+[MUA language.md](https://github.com/hahahaha123567/MUA-interpreter/blob/master/MUA%20language.md)
 
 # 解释器
 
